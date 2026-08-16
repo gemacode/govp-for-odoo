@@ -1,0 +1,17 @@
+name: Error reproducible
+description: Comunica un fallo sin tokens ni datos de clientes.
+title: "[bug] "
+labels: [bug]
+body:
+  - type: input
+    id: odoo-version
+    attributes:
+      label: Versión exacta de Odoo
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproducción mínima
+    validations:
+      required: true

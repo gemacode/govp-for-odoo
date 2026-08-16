@@ -1,0 +1,21 @@
+<odoo>
+  <record id="view_picking_form_govp" model="ir.ui.view">
+    <field name="name">stock.picking.form.govp</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="inside">
+        <button name="action_govp_issue" type="object" string="Emitir GOVP" invisible="state != 'done' or picking_type_code != 'outgoing' or govp_code"/>
+        <button name="action_govp_verify" type="object" string="Comprobar GOVP" invisible="not govp_code"/>
+      </xpath>
+      <xpath expr="//sheet" position="inside">
+        <group string="GOVP Exchange" invisible="not govp_code and govp_status == 'none'">
+          <field name="govp_status" widget="badge"/>
+          <field name="govp_code"/>
+          <field name="govp_verify_url" widget="url"/>
+          <field name="govp_error" invisible="not govp_error"/>
+        </group>
+      </xpath>
+    </field>
+  </record>
+</odoo>

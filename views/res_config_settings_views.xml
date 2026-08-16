@@ -1,0 +1,19 @@
+<odoo>
+  <record id="res_config_settings_view_form_govp" model="ir.ui.view">
+    <field name="name">res.config.settings.view.form.govp</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="stock.res_config_settings_view_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//form" position="inside">
+        <app string="GOVP Exchange" name="govp_exchange">
+          <block title="Conexión">
+            <setting string="Servicio GOVP Exchange"><field name="govp_exchange_url" placeholder="https://partners.gemacode.org/api/exchange"/></setting>
+            <setting string="Token del conector"><field name="govp_exchange_token" password="True"/></setting>
+            <setting string="Emisión automática"><field name="govp_auto_issue_delivery"/><div class="text-muted">Emite el GOVP al validar una entrega de salida.</div></setting>
+            <button name="action_govp_test_connection" type="object" string="Probar conexión" class="btn-primary"/>
+          </block>
+        </app>
+      </xpath>
+    </field>
+  </record>
+</odoo>
