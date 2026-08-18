@@ -1,7 +1,7 @@
 {
     "name": "GOVP for Odoo",
     "summary": "Emite y comprueba GOVP desde entregas y recepciones",
-    "version": "18.0.0.1.0",
+    "version": "18.0.0.1.1",
     "category": "Inventory/Inventory",
     "license": "AGPL-3",
     "author": "Gemacode",

@@ -1,4 +1,5 @@
 import unittest
+from datetime import timedelta
 
 try:
     from odoo.tests import tagged
@@ -71,3 +72,11 @@ class GovpStockPickingNativeTest(TransactionCase):
         self.assertNotEqual(picking_a._govp_idempotency_key(), picking_b._govp_idempotency_key())
         self.assertIn(":%s:" % self.company_a.id, picking_a._govp_idempotency_key())
         self.assertIn(":%s:" % self.company_b.id, picking_b._govp_idempotency_key())
+
+    def test_validity_is_anchored_to_the_stable_picking_date(self):
+        picking = self._picking(self.company_a)
+        expected = picking._govp_completed_at() + timedelta(days=365)
+        first = picking._govp_payload()["validUntil"]
+        second = picking._govp_payload()["validUntil"]
+        self.assertEqual(first, second)
+        self.assertEqual(first, expected.strftime("%Y-%m-%dT%H:%M:%SZ"))

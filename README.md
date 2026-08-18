@@ -6,6 +6,7 @@ emitir un GOVP al validar una entrega y comprobar su estado desde el albarán.
 Compatibilidad validada con Odoo 18 y PostgreSQL: instalación, actualización,
 desinstalación, entregas parciales, lotes/series, orden canónico y separación
 multiempresa. El smoke usa contenedores y destruye todos sus datos al terminar.
+La vigencia se calcula desde la fecha estable del albarán y no cambia al reintentar.
 
 Instalación: descarga el ZIP de la release, súbelo a tus addons como
 `govp_for_odoo`, actualiza la lista de aplicaciones e instala **GOVP for Odoo**.

@@ -16,9 +16,16 @@ class StockPicking(models.Model):
     govp_status = fields.Selection([("none", "Sin GOVP"), ("pending", "Pendiente"), ("valid", "Válido"), ("revoked", "Revocado"), ("error", "Incidencia")], default="none", copy=False, readonly=True)
     govp_error = fields.Text(copy=False, readonly=True)
 
+    def _govp_completed_at(self):
+        self.ensure_one()
+        completed = self.date_done or self.scheduled_date or self.create_date
+        if not completed:
+            raise UserError(_("La entrega necesita una fecha estable antes de emitir GOVP."))
+        return fields.Datetime.to_datetime(completed)
+
     def _govp_idempotency_key(self):
         self.ensure_one()
-        completed = fields.Datetime.to_string(self.date_done or self.scheduled_date or self.create_date)
+        completed = fields.Datetime.to_string(self._govp_completed_at())
         return "odoo:stock.picking:%s:%s:%s" % (self.company_id.id, self.id, completed.replace(" ", "T"))
 
     def _govp_evidence_lines(self):
@@ -52,7 +59,7 @@ class StockPicking(models.Model):
             "subject": {"type": "shipment", "id": self.name, "name": _("Expedición %s") % self.name, "description": self.origin or None},
             "requirement": _("Demostrar la expedición y sus líneas antes de aceptar la recepción."),
             "evidence": [{"label": _("Huella de las líneas de movimiento"), "sha256": digest}],
-            "validUntil": fields.Datetime.to_string(fields.Datetime.now() + timedelta(days=365)).replace(" ", "T") + "Z",
+            "validUntil": fields.Datetime.to_string(self._govp_completed_at() + timedelta(days=365)).replace(" ", "T") + "Z",
             "source": {"platform": "odoo", "externalId": self._govp_idempotency_key()},
         }
 
