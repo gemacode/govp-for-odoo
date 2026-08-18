@@ -13,11 +13,12 @@ jobs:
       - run: bash tests/native-smoke.sh
       - name: Package module
         run: |
+          VERSION="${GITHUB_REF_NAME#v}"
           mkdir -p package/govp_for_odoo
           git archive HEAD | tar -x -C package/govp_for_odoo
           rm -rf package/govp_for_odoo/.github package/govp_for_odoo/tests package/govp_for_odoo/package
           cd package
-          zip -qr ../govp-for-odoo-18.0.0.1.0.zip govp_for_odoo
-      - run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes govp-for-odoo-18.0.0.1.0.zip
+          zip -qr "../govp-for-odoo-${VERSION}.zip" govp_for_odoo
+      - run: gh release create "$GITHUB_REF_NAME" --verify-tag --generate-notes "govp-for-odoo-${GITHUB_REF_NAME#v}.zip"
         env:
           GH_TOKEN: ${{ github.token }}
