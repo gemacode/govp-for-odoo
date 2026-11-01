@@ -14,7 +14,7 @@ services:
       - /var/lib/postgresql/data
 
   odoo:
-    image: odoo:18.0
+    image: odoo:20.0
     depends_on:
       db:
         condition: service_healthy
